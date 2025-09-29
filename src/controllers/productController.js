@@ -2,9 +2,9 @@ const Product = require("../models/product");
 
 const createProduct = async (req, res) => {
   try {
-    const { name, description, stock_quantity } = req.body;
+    const { name, description, stock_quantity, low_stock_threshold } = req.body;
 
-    const newProduct = new Product({ name, description, stock_quantity });
+    const newProduct = new Product({ name, description, stock_quantity, low_stock_threshold });
     await newProduct.save();
 
     res
@@ -61,6 +61,8 @@ const updateProduct = async (req, res) => {
       updates.description = req.body.description;
     if (req.body.stock_quantity !== undefined)
       updates.stock_quantity = req.body.stock_quantity;
+    if(req.body.low_stock_threshold !== undefined)
+        updates.low_stock_threshold = req.body.low_stock_threshold;
 
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
